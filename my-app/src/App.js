@@ -4,6 +4,8 @@ import { Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Profile from './pages/Profile';
 import Battle from './pages/Battle';
+import Login from './pages/Login'; // Add this import
+import Learn from './pages/Learn';
 import './App.css';
 
 function App() {
@@ -13,6 +15,9 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/battle" element={<Battle />} />
+        <Route path="/login" element={<Login />} /> {/* Add this line */}
+      
+<Route path="/learn" element={<Learn />} />
       </Routes>
     </div>
   );
