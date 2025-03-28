@@ -15,6 +15,10 @@ const Home = () => {
         <Link to="/login" className="login-button">
           Login
         </Link>
+       
+<Link to="/profile" className="profile-button">
+  👤 Profile
+</Link>
       </header>
 
       {/* Hero Section */}

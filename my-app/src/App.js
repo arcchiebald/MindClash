@@ -2,6 +2,7 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
+import Profile from './pages/Profile'; // Correct import path
 import './App.css';
 
 function App() {
@@ -9,7 +10,7 @@ function App() {
     <div className="App">
       <Routes>
         <Route path="/" element={<Home />} />
-        {/* Add other routes later */}
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </div>
   );
