@@ -1,0 +1,158 @@
+/* src/pages/Login.css */
+.login-container {
+    min-height: 100vh;
+    padding: 2rem;
+    background: linear-gradient(135deg, #f9f2ff 0%, #e3f6ff 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Inter', sans-serif;
+  }
+  
+  .login-card {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 3rem;
+    border-radius: 25px;
+    box-shadow: 0 12px 40px rgba(107, 72, 255, 0.1);
+    width: 100%;
+    max-width: 450px;
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+  
+  .login-title {
+    color: #2f2d2e;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 2rem;
+    letter-spacing: 0.5px;
+  }
+  
+  .login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .form-group label {
+    color: #6b48ff;
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+  
+  .form-group input {
+    padding: 1rem;
+    border: 2px solid #e8e6ff;
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+  }
+  
+  .form-group input:focus {
+    outline: none;
+    border-color: #6b48ff;
+    box-shadow: 0 2px 8px rgba(107, 72, 255, 0.1);
+  }
+  
+  .login-button {
+    background: #6b48ff;
+    color: white;
+    padding: 1.2rem;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+  }
+  
+  .login-button:hover {
+    background: #5a3dd9;
+    transform: translateY(-2px);
+  }
+  
+  .login-button:disabled {
+    background: #8a63ff;
+    cursor: not-allowed;
+  }
+  
+  .spinner {
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255,255,255,0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  
+  .error-message {
+    color: #ff6b6b;
+    background: rgba(255,107,107,0.1);
+    padding: 1rem;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 500;
+  }
+  
+  .login-links {
+    margin-top: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .login-links .link {
+    color: #6b48ff;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+  }
+  
+  .login-links .link:hover {
+    color: #5a3dd9;
+    text-decoration: underline;
+  }
+  
+  @media (max-width: 480px) {
+    .login-card {
+      padding: 2rem;
+    }
+    
+    .login-links {
+      flex-direction: column;
+      gap: 0.8rem;
+      text-align: center;
+    }
+  }/* Add to Login.css */
+.back-button {
+    display: block;
+    text-align: center;
+    margin-top: 2rem;
+    color: #6b48ff;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    width: fit-content;
+    margin: 2rem auto 0;
+  }
+  
+  .back-button:hover {
+    background: rgba(107, 72, 255, 0.1);
+    transform: translateX(-5px);
+  }
