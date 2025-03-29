@@ -63,6 +63,11 @@ class Student(models.Model):
     def __str__(self):
         return f"{self.user.username} - Student"
     
+    @property
+    def all_battles(self):
+        from django.db.models import Q
+        return Battle.objects.filter(Q(student1=self) | Q(student2=self))
+    
 @receiver(post_save, sender=CustomUser)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
@@ -103,3 +108,61 @@ def create_grade_topics(sender, instance, created, **kwargs):
     if created:
         for grade in range(9, 13):
             GradeTopic.objects.create(grade=grade, subject=instance, topics="")  # Initialize with empty topics
+            
+
+class Battle(models.Model):
+    student1 = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='student1_battles')
+    student2 = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='student2_battles')
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+    grade = models.IntegerField(editable=False)  # Grade will be automatically assigned
+    topic = models.ForeignKey(GradeTopic, on_delete=models.CASCADE, related_name='battles')
+    winner = models.ForeignKey(Student, on_delete=models.CASCADE, null=True, blank=True, related_name='won_battles')
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_completed = models.DateTimeField(null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        # Automatically determine the grade based on the students
+        if self.student1.grade != self.student2.grade:
+            raise ValueError("Both students must be in the same grade to battle.")
+        self.grade = self.student1.grade
+
+        # Ensure the winner is either student1 or student2
+        if self.winner and self.winner not in [self.student1, self.student2]:
+            raise ValueError("The winner must be either student1 or student2.")
+
+        # Automatically assign a topic based on grade and subject
+        grade_topics = GradeTopic.objects.filter(grade=self.grade, subject=self.subject)
+        if not grade_topics.exists():
+            raise ValueError("No topics available for the given grade and subject.")
+        self.topic = grade_topics.first()  # Assign the first available topic
+
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"Battle between {self.student1.user.username} and {self.student2.user.username} ({self.date_created.strftime('%Y-%m-%d %H:%M:%S')})"
+    
+@receiver(post_save, sender=Battle)
+def update_skill_points(sender, instance, **kwargs):
+    if instance.date_completed and instance.winner:
+        # Ensure both students are part of the battle
+        if instance.winner == instance.student1:
+            loser = instance.student2
+        elif instance.winner == instance.student2:
+            loser = instance.student1
+        else:
+            return  # Invalid state, do nothing
+
+        # Elo rating algorithm
+        K = 32  # K-factor
+        winner_points = instance.winner.skill_points
+        loser_points = loser.skill_points
+
+        expected_winner = 1 / (1 + 10 ** ((loser_points - winner_points) / 400))
+        expected_loser = 1 / (1 + 10 ** ((winner_points - loser_points) / 400))
+
+        instance.winner.skill_points += int(K * (1 - expected_winner))
+        loser.skill_points += int(K * (0 - expected_loser))
+
+        # Save updated skill points
+        instance.winner.save()
+        loser.save()
