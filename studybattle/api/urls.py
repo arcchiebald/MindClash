@@ -9,4 +9,5 @@ urlpatterns = [
     path('user/', views.GetUserView.as_view(), name='get_user'),
     path('subjects/', views.SubjectListView.as_view(), name='subject_list'),
     path('topics/', views.GradeTopicListView.as_view(), name='grade_topic_list'),
+    path('generate-quiz/', views.QuizGenerationView.as_view(), name='generate_quiz'),
 ]

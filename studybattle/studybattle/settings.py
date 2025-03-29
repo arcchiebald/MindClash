@@ -133,3 +133,6 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ],
 }
+
+
+GOOGLE_APPLICATION_CREDENTIALS = str(Path(BASE_DIR, "mindclash-455211-9e3b2f72b801.json"))

@@ -47,6 +47,10 @@ class LoginSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({"detail": "Invalid credentials."})
         return {"user": user}
 
+    class Meta:
+        model = User
+        fields = ['email', 'password']
+
 class SubjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Subject

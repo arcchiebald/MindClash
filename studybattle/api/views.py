@@ -5,6 +5,9 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.authtoken.models import Token
+import vertexai
+from vertexai.language_models import TextGenerationModel
+from django.http import JsonResponse
 
 
 # Create your views here.
@@ -48,3 +51,15 @@ class GradeTopicListView(APIView):
         grade_topics = GradeTopic.objects.all()
         serializer = GradeTopicSerializer(grade_topics, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    
+class QuizGenerationView(APIView):
+    def post(self, request):
+        """Generate a quiz question and answer using Google's Gemini model."""
+        vertexai.init(project="mindclash-455211", location="us-central1")
+        prompt = "Generate a multiple-choice question for high school physics with four options and the correct answer."
+        
+        model = TextGenerationModel.from_pretrained("gemini-pro")
+        response = model.predict(prompt, max_output_tokens=200)
+        
+        return JsonResponse({"question": response.text})
