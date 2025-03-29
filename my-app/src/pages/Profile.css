@@ -239,4 +239,18 @@
     padding: 0 1rem;
     font-size: 0.9rem;
   }
+}/* Add to SignUp.css */
+.grade-display {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background: rgba(107, 72, 255, 0.1);
+  padding: 1rem;
+  border-radius: 12px;
+  border: 2px solid #e8e6ff;
+}
+
+.grade-display span {
+  color: #6b48ff;
+  font-weight: 600;
 }
