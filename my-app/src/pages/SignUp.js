@@ -1,4 +1,4 @@
-// src/pages/Signup.js
+
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './SignUp.css';
@@ -110,6 +110,10 @@ const Signup = () => {
         <p className="login-link">
           Already have an account? <Link to="/login">Login here</Link>
         </p>
+        <Link to="/" className="back-button">
+          ← Back to Home
+        </Link>
+        
       </div>
     </div>
   );

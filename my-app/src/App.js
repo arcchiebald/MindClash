@@ -4,10 +4,13 @@ import { Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Profile from './pages/Profile';
 import Battle from './pages/Battle';
-import Login from './pages/Login'; // Add this import
+import Login from './pages/Login'; 
 import Learn from './pages/Learn';
 import './App.css';
 import Signup from './pages/SignUp';
+import SubjectTopics from './pages/SubjectTopics';
+import TopicDetails from './pages/TopicDetails';
+
 
 function App() {
   return (
@@ -20,6 +23,8 @@ function App() {
 <Route path="/signup" element={<Signup />} /> {/* Add this line */}
       
 <Route path="/learn" element={<Learn />} />
+<Route path="/learn/:grade/:subject" element={<SubjectTopics />} />
+        <Route path="/learn/:grade/:subject/:topicIndex" element={<TopicDetails />} />
       </Routes>
     </div>
   );

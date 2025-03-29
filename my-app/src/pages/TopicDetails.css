@@ -1,0 +1,62 @@
+/* src/pages/TopicDetails.css */
+.topic-details-container {
+    padding: 2rem;
+    min-height: calc(100vh - 40px);
+    background: linear-gradient(135deg, #f9f2ff 0%, #e3f6ff 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .topic-details-container .card {
+    background: white;
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(107, 72, 255, 0.1);
+    width: 100%;
+    max-width: 800px;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+  
+  .topic-details-container h1,
+  .topic-details-container h2 {
+    color: #6b48ff;
+    font-family: 'Bubblegum Sans', cursive;
+    margin-bottom: 1.5rem;
+  }
+  
+  .topic-details-container p {
+    color: #4a4a4a;
+    font-size: 1.2rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+  
+  .topic-details-container ul {
+    list-style-type: disc;
+    padding-left: 1.5rem;
+    margin-bottom: 1.5rem;
+    font-family: 'Bubblegum Sans', cursive;
+    text-align: left;
+    width: 100%;
+    max-width: 600px;
+  }
+  
+  .topic-details-container ul li {
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    color: #2f2d2e;
+  }
+  
+  .back-link {
+    text-decoration: none;
+    color: #6b48ff;
+    font-weight: 600;
+    transition: color 0.3s ease;
+  }
+  
+  .back-link:hover {
+    color: #ff6b6b;
+  }
+  

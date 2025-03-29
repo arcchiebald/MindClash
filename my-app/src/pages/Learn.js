@@ -1,15 +1,24 @@
 // src/pages/Learn.js
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import './Learn.css';
 
 const Learn = () => {
   const [selectedGrade, setSelectedGrade] = useState('');
+  const navigate = useNavigate();
+
   const subjects = [
     { name: 'Mathematics', icon: '🧮' },
     { name: 'English', icon: '📖' },
     { name: 'History', icon: '🌍' },
   ];
+
+  const handleStart = (subjectName) => {
+    if (selectedGrade) {
+      // Convert subject name to lowercase for URL usage
+      navigate(`/learn/${selectedGrade}/${subjectName.toLowerCase()}`);
+    }
+  };
 
   return (
     <div className="learn-container">
@@ -40,6 +49,7 @@ const Learn = () => {
             <button 
               className="start-button"
               disabled={!selectedGrade}
+              onClick={() => handleStart(subject.name)}
             >
               Start Grade {selectedGrade || '...'}
             </button>
