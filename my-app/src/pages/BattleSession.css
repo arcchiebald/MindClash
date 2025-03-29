@@ -1,0 +1,116 @@
+.battle-session-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: linear-gradient(135deg, #6b73ff 0%, #000dff 100%);
+    color: white;
+    padding: 2rem;
+    min-height: 100vh;
+  }
+  
+  .players-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2rem;
+    gap: 2rem;
+  }
+  
+  .player-card {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 1.5rem;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    backdrop-filter: blur(8px);
+  }
+  
+  .avatar {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+  
+  .vs {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #ff6b6b;
+    text-align: center;
+    padding: 1rem;
+    border-radius: 50%;
+    background-color: #fff;
+    box-shadow: 0 0 15px rgba(255, 107, 107, 0.8);
+  }
+  
+  .question-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 2rem;
+  }
+  
+  .question {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .answer-input {
+    padding: 10px;
+    font-size: 1.2rem;
+    border-radius: 8px;
+    border: none;
+    margin-bottom: 1rem;
+    width: 250px;
+    text-align: center;
+  }
+  
+  .submit-button {
+    background: #ffcc00;
+    color: black;
+    padding: 1rem 2rem;
+    border-radius: 30px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .submit-button:hover {
+    background-color: #ffaa00;
+  }
+  
+  .back-button {
+    margin-top: 2rem;
+    color: #ffcc00;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.1rem;
+  }
+  .subject-badge {
+  background: #6b48ff;
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 15px;
+  font-size: 0.9rem;
+  display: inline-block;
+  margin-top: 0.5rem;
+}
+
+.win-stats {
+  background: rgba(255, 215, 0, 0.1);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  margin-top: 1rem;
+  color: #ff6b6b;
+  font-weight: 600;
+}
+
+.error-container {
+  text-align: center;
+  padding: 2rem;
+}
+
+.error-container ul {
+  text-align: left;
+  max-width: 300px;
+  margin: 1rem auto;
+}
+  
