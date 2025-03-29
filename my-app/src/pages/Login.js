@@ -1,6 +1,7 @@
 // src/pages/Login.js
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';  // Add axios import
 import './Login.css';
 
 const Login = () => {
@@ -15,17 +16,38 @@ const Login = () => {
     setIsLoading(true);
     setError('');
 
-    // Mock login - replace with real API call later
     try {
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      if (email && password) {
-        localStorage.setItem('isLoggedIn', 'true');
-        navigate('/');
-      } else {
-        throw new Error('Please fill in all fields');
-      }
+      // 1. Make actual API call to Django backend
+      const response = await axios.post(
+        `http://127.0.0.1:8000/api/login/`,  // Use environment variable
+        {
+          email: email,
+          password: password
+        }
+      );
+
+      // 2. Store received token in localStorage
+      localStorage.setItem('authToken', response.data.token);
+      
+      // 3. Clear form fields
+      setEmail('');
+      setPassword('');
+      
+      // 4. Redirect to home page
+      navigate('/');
+
     } catch (err) {
-      setError(err.message || 'Login failed');
+      // Handle different error types
+      if (err.response) {
+        // Backend returned error response (4xx/5xx status)
+        setError(err.response.data.error || 'Invalid email or password');
+      } else if (err.request) {
+        // No response received
+        setError('Server is not responding. Please try again later.');
+      } else {
+        // Other errors
+        setError('Login failed. Please try again.');
+      }
     } finally {
       setIsLoading(false);
     }
@@ -45,6 +67,7 @@ const Login = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="student@studybattle.com"
+              required
             />
           </div>
 
@@ -56,6 +79,8 @@ const Login = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
+              required
+              minLength="6"
             />
           </div>
 
@@ -80,9 +105,7 @@ const Login = () => {
         <div className="login-links">
           <Link to="/signup" className="link">Create Account</Link>
           <Link to="/forgot-password" className="link">Forgot Password?</Link>
-          <Link to="/" className="back-button">
-  ← Back to Home
-</Link>
+          <Link to="/" className="back-button">← Back to Home</Link>
         </div>
       </div>
     </div>
