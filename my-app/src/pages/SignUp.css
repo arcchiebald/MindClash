@@ -16,7 +16,7 @@
     box-shadow: 0 12px 40px rgba(107, 72, 255, 0.1);
     width: 100%;
     max-width: 500px;
-    backdrop-filter: blur(12px);
+    
     border: 1px solid rgba(255, 255, 255, 0.3);
   }
   
