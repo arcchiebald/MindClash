@@ -163,6 +163,29 @@ def update_skill_points(sender, instance, **kwargs):
         instance.winner.skill_points += int(K * (1 - expected_winner))
         loser.skill_points += int(K * (0 - expected_loser))
 
-        # Save updated skill points
+        # Increase number_of_wins for the winner
+        instance.winner.number_of_wins += 1
+
+        # Save updated skill points and wins
         instance.winner.save()
         loser.save()
+
+    # Elo rating algorithm for a draw
+    if instance.date_completed and instance.winner is None:
+        # Ensure both students are part of the battle
+        student1 = instance.student1
+        student2 = instance.student2
+
+        K = 16  # Reduced K-factor for a draw
+        student1_points = student1.skill_points
+        student2_points = student2.skill_points
+
+        expected_student1 = 1 / (1 + 10 ** ((student2_points - student1_points) / 400))
+        expected_student2 = 1 / (1 + 10 ** ((student1_points - student2_points) / 400))
+
+        student1.skill_points += int(K * (0.5 - expected_student1))
+        student2.skill_points += int(K * (0.5 - expected_student2))
+
+        # Save updated skill points
+        student1.save()
+        student2.save()
