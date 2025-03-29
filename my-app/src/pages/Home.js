@@ -12,15 +12,20 @@ const Home = () => {
           <h1 className="logo">MindClash</h1>
           <p className="tagline">Learn. Compete. Excel.</p>
         </div>
-        <Link to="/login" className="login-button">
-          Login
-        </Link>
-       
-<Link to="/profile" className="profile-button">
-  👤 Profile
-</Link>
+        <div className="header-buttons">
+          <Link to="/leaderboard" className="leaderboard-button">
+            🏆 Leaderboard
+          </Link>
+          <Link to="/login" className="login-button">
+            Login
+          </Link>
+          <Link to="/profile" className="profile-button">
+            👤 Profile
+          </Link>
+        </div>
       </header>
 
+      {/* Rest of your existing code remains unchanged */}
       {/* Hero Section */}
       <main className="hero-section">
         <div className="hero-content">

@@ -1,5 +1,6 @@
+// src/pages/Battle.js
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './Battle.css';
 
 const Battle = () => {
@@ -9,11 +10,11 @@ const Battle = () => {
   const [selectedSubject, setSelectedSubject] = useState('Math');
   const navigate = useNavigate();
 
-  // Mock opponents data ბოდიში ჯერ მხოლოდ ბოტია 
+  // Mock opponents data
   const mockOpponents = [
-    { id: 1, name: 'MathMaster99', grade: 11, avatar: '🧑🏫', wins: 42 },
-    { id: 2, name: 'AlgebraAce', grade: 10, avatar: '👩💻', wins: 38 },
-    { id: 3, name: 'GeoGenius', grade: 12, avatar: '🧑🎓', wins: 55 },
+    { id: 1, name: 'აიტიშნიკი გიორგა', grade: 11, avatar: '🧑🏫', wins: 42 },
+    { id: 2, name: 'მათემატიკის ლომი', grade: 11, avatar: '👩💻', wins: 38 },
+    { id: 3, name: 'ჯუმბერ ტყაბლაძე', grade: 11, avatar: '🧑🎓', wins: 55 },
   ];
 
   const handleReadyClick = () => {
@@ -26,19 +27,19 @@ const Battle = () => {
         ];
         setIsSearching(false);
         setFoundOpponent(opponent);
-        startCountdown(opponent); // Pass opponent directly here
+        startCountdown(opponent);
       }, 2000);
     }
   };
-  
-  const startCountdown = (opponent) => { // Accept opponent as parameter
+
+  const startCountdown = (opponent) => {
     const timer = setInterval(() => {
       setCountdown((prev) => {
         if (prev <= 1) {
           clearInterval(timer);
           navigate('/battle/session', {
             state: {
-              opponent: opponent, // Use the parameter
+              opponent: opponent,
               user: { name: "You", avatar: "🧑💻", grade: 10 },
               subject: selectedSubject,
             }
@@ -62,6 +63,12 @@ const Battle = () => {
 
   return (
     <div className="battle-container">
+      {/* Added logo link to home */}
+      <Link to="/" className="logo-section">
+        <h1 className="logo">MindClash</h1>
+        <p className="tagline">Learn. Compete. Excel.</p>
+      </Link>
+
       <div className="subject-select-container">
         <label htmlFor="subject">Choose Subject:</label>
         <select

@@ -1,83 +1,172 @@
 /* src/pages/Battle.css */
+.battle-header {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 1000;
+  text-decoration: none;
+}
+
+.battle-logo {
+  font-family: 'Bubblegum Sans', cursive;
+  font-size: 2.5rem;
+  color: #6b48ff;
+  margin: 0;
+  text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+}
+
+.battle-tagline {
+  font-size: 1.1rem;
+  color: #666;
+  margin: 0;
+  font-weight: 500;
+}
 
 .battle-container {
   padding: 2rem;
   min-height: 100vh;
   background: url(https://img.freepik.com/premium-photo/simple-abstract-geometric-pattern-background-color-background-website-design-decoration_86390-7410.jpg);
   font-family: 'Inter', sans-serif;
-  color: rgba(2, 4, 31, 0.3);
+  color: #2f2d2e;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  position: relative;
 }
 
+/* Subject Selector */
 .subject-select-container {
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
   text-align: center;
   display: flex;
+  gap: 1rem;
+  align-items: center;
 }
 
 .subject-select-container label {
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   font-weight: bold;
-  display:flex
+  color: #4a4a4a;
 }
 
 .subject-select {
-  margin-left: 10px;
-  padding: 10px;
-  font-size: 1rem;
-  border-radius: 8px;
-  border: none;
-  background: white;
-  color: rgba(0, 119, 255, 0.3);
+  padding: 12px 20px;
+  font-size: 1.1rem;
+  border-radius: 12px;
+  border: 2px solid #6b48ff;
+  background: rgba(255, 255, 255, 0.9);
+  color: #6b48ff;
   cursor: pointer;
-  display: flex;
 }
 
+/* Battle Panels */
 .battle-panels {
   display: flex;
   justify-content: center;
   gap: 4rem;
   margin: 2rem auto;
   max-width: 1200px;
+  width: 100%;
 }
-
-/* src/pages/Battle.css */
 
 .user-panel, .opponent-panel {
   flex: 1;
-  background: rgba(0, 119, 255, 0.3); /* Increased opacity */
+  background: rgba(160, 217, 255, 0.95);
   padding: 2rem;
-  border-radius: 20px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  border-radius: 25px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
   text-align: center;
-  position: relative; 
-  z-index: 1; 
+  border: 3px solid #6b48ff;
 }
 
-
 .battle-avatar {
-  font-size: 4rem;
-  margin-bottom: 1rem;
+  font-size: 4.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .vs-circle {
-  width: 100px;
-  height: 100px;
-  background: rgba(0, 119, 255, 0.3);
+  width: 120px;
+  height: 120px;
+  background: #6b48ff;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   font-weight: bold;
   color: white;
   align-self: center;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 0 25px rgba(107, 72, 255, 0.4);
 }
 
+/* Battle Controls */
+.battle-controls {
+  text-align: center;
+  margin-top: 2.5rem;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.ready-button {
+  background: #6b48ff;
+  color: white;
+  padding: 1.5rem 4rem;
+  border-radius: 35px;
+  font-size: 1.3rem;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(107, 72, 255, 0.4);
+}
+
+.ready-button:hover {
+  background: #5a3dd9;
+  transform: translateY(-2px);
+}
+
+.search-spinner {
+  width: 25px;
+  height: 25px;
+  border: 4px solid rgba(255,255,255,0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-right: 12px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Countdown */
+.countdown-timer {
+  font-size: 1.8rem;
+  color: #6b48ff;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+}
+
+.cancel-button {
+  background: #ff6b6b;
+  color: white;
+  padding: 1rem 2.5rem;
+  border-radius: 30px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+}
+
+.cancel-button:hover {
+  background: #e65a5a;
+  transform: translateY(-2px);
+}
+
+/* Animations */
 .searching-pulse {
   animation: pulse 1.5s infinite;
 }
@@ -87,71 +176,22 @@
   100% { transform: scale(2); opacity: 0; }
 }
 
-.battle-controls {
-  text-align: center;
-  margin-top: 2rem;
-}
-
-.ready-button {
-  background: rgba(0, 119, 255, 0.3);
-  color: rgb(255, 255, 255);
-  font-weight: bold;
-  border: none;
-  padding: 1.5rem 3rem;
-  border-radius: 30px;
-  font-size: 1.2rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-}
-
-.ready-button:hover {
-  background: #fc4141;
-}
-
-.search-spinner {
-  width: 20px;
-  height: 20px;
-  border: 3px solid rgba(255,255,255,0.3);
-  border-top-color: white;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin-right: 10px;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-.countdown-timer {
-  font-size: 1.5rem;
-  color: white;
-  margin-bottom: 1rem;
-}
-
-
+/* Opponent Section */
 .win-stats {
-  background: rgba(255, 217, 0, 0.9);
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  margin-top: 1rem;
+  background: #ffd700;
+  color: #2f2d2e;
+  padding: 0.8rem 1.5rem;
+  border-radius: 15px;
+  font-weight: bold;
+  margin-top: 1.5rem;
+  box-shadow: 0 3px 10px rgba(255, 215, 0, 0.3);
 }
 
 .opponent-placeholder {
-  color: #ddd;
+  color: #888;
+  font-size: 1.2rem;
   min-height: 200px;
   display: flex;
   align-items: center;
   justify-content: center;
-}
-.cancel-button {
-  background: rgba(0, 119, 255, 0.3);
-  color: white;
-  font-weight: bold;
-  border: none;
-  padding: 1rem 2rem;
-  border-radius: 30px;
-  font-size: 1.2rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
 }

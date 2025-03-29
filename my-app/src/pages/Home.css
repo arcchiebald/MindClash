@@ -200,4 +200,23 @@
   
   .profile-button:hover {
     transform: scale(1.05);
-  }
+  }/* Add to Home.css */
+.leaderboard-button {
+  background: rgba(255, 215, 0, 0.1);
+  color: #6b48ff;
+  padding: 12px 30px;
+  border-radius: 15px;
+  text-decoration: none;
+  font-family: 'Bubblegum Sans', cursive;
+  font-size: 1.1rem;
+  box-shadow: 0 4px 0 rgba(255, 215, 0, 0.2);
+  transition: all 0.2s;
+  margin-left: 15px;
+  border: 2px solid rgba(255, 215, 0, 0.3);
+}
+
+.leaderboard-button:hover {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 rgba(255, 215, 0, 0.1);
+  background: rgba(255, 215, 0, 0.15);
+}
