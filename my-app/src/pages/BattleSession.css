@@ -1,90 +1,105 @@
 .battle-session-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background: linear-gradient(135deg, #6b73ff 0%, #000dff 100%);
-    color: white;
-    padding: 2rem;
-    min-height: 100vh;
-  }
-  
-  .players-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 2rem;
-    gap: 2rem;
-  }
-  
-  .player-card {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 1.5rem;
-    border-radius: 15px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-    text-align: center;
-    backdrop-filter: blur(8px);
-  }
-  
-  .avatar {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-  }
-  
-  .vs {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #ff6b6b;
-    text-align: center;
-    padding: 1rem;
-    border-radius: 50%;
-    background-color: #fff;
-    box-shadow: 0 0 15px rgba(255, 107, 107, 0.8);
-  }
-  
-  .question-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 2rem;
-  }
-  
-  .question {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-  }
-  
-  .answer-input {
-    padding: 10px;
-    font-size: 1.2rem;
-    border-radius: 8px;
-    border: none;
-    margin-bottom: 1rem;
-    width: 250px;
-    text-align: center;
-  }
-  
-  .submit-button {
-    background: #ffcc00;
-    color: black;
-    padding: 1rem 2rem;
-    border-radius: 30px;
-    font-size: 1.2rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .submit-button:hover {
-    background-color: #ffaa00;
-  }
-  
-  .back-button {
-    margin-top: 2rem;
-    color: #787463;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 1.1rem;
-  }
-  .subject-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  min-height: 100vh;
+  background: url(https://img.freepik.com/premium-photo/simple-abstract-geometric-pattern-background-color-background-website-design-decoration_86390-7410.jpg);
+  font-family: 'Inter', sans-serif;
+  color: white;
+}
+
+.players-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4rem;
+  margin: 2rem auto;
+  max-width: 1200px;
+}
+
+.player-card {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.avatar {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.vs {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #ff6b6b;
+  padding: 1rem;
+  border-radius: 50%;
+  background-color: #fff;
+  box-shadow: 0 0 15px rgba(255, 107, 107, 0.8);
+}
+
+.question-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  width: 100%;
+}
+
+.question-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.timer {
+  color: #ff6b6b;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.question-card {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+textarea {
+  width: 100%;
+  height: 150px;
+  margin: 1rem 0;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.3);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 1rem;
+  font-family: inherit;
+}
+
+.submit-button {
+  background: #ffcc00;
+  color: black;
+  font-weight: bold;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 30px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(255, 204, 0, 0.5);
+}
+
+.submit-button:hover {
+  background: #ffaa00;
+}
+
+.subject-badge {
   background: #6b48ff;
   color: white;
   padding: 0.3rem 0.8rem;
@@ -112,5 +127,28 @@
   text-align: left;
   max-width: 300px;
   margin: 1rem auto;
+  list-style-type: none;
 }
-  
+
+.back-button {
+  margin-top: 2rem;
+  color: #ffcc00;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1.1rem;
+  transition: color 0.3s ease;
+}
+
+.back-button:hover {
+  color: #ffaa00;
+}
+
+/* Animation for timer */
+@keyframes pulse {
+  0% { transform: scale(0.8); opacity: 1; }
+  100% { transform: scale(2); opacity: 0; }
+}
+
+.searching-pulse {
+  animation: pulse 1.5s infinite;
+}

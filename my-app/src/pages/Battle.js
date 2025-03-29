@@ -9,7 +9,7 @@ const Battle = () => {
   const [selectedSubject, setSelectedSubject] = useState('Math');
   const navigate = useNavigate();
 
-  // Mock opponents data
+  // Mock opponents data ბოდიში ჯერ მხოლოდ ბოტია 
   const mockOpponents = [
     { id: 1, name: 'MathMaster99', grade: 11, avatar: '🧑🏫', wins: 42 },
     { id: 2, name: 'AlgebraAce', grade: 10, avatar: '👩💻', wins: 38 },
