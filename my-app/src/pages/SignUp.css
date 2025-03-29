@@ -1,8 +1,7 @@
-/* src/pages/Signup.css */
 .signup-container {
     min-height: 100vh;
     padding: 2rem;
-    background: linear-gradient(135deg, #f9f2ff 0%, #e3f6ff 100%);
+    background: url(https://img.freepik.com/premium-photo/simple-abstract-geometric-pattern-background-color-background-website-design-decoration_86390-7410.jpg);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -21,7 +20,7 @@
   }
   
   .signup-title {
-    color: #2f2d2e;
+    color: #333232;
     font-family: 'Bubblegum Sans', cursive;
     font-size: 2rem;
     text-align: center;
@@ -42,7 +41,7 @@
   }
   
   .form-group label {
-    color: #6b48ff;
+    color:wheat;
     font-weight: 600;
     font-size: 0.9rem;
   }
@@ -62,7 +61,7 @@
   }
   
   .signup-button {
-    background: #6b48ff;
+    background: #bcbcbc;
     color: white;
     padding: 1.2rem;
     border: none;
@@ -78,12 +77,12 @@
   }
   
   .signup-button:hover {
-    background: #5a3dd9;
+    background:wheat;
     transform: translateY(-2px);
   }
   
   .signup-button:disabled {
-    background: #8a63ff;
+    background: #ff63ea;
     cursor: not-allowed;
   }
   
@@ -91,7 +90,7 @@
     width: 20px;
     height: 20px;
     border: 3px solid rgba(255,255,255,0.3);
-    border-top-color: white;
+    border-top-color: rgb(144, 153, 165);
     border-radius: 50%;
     animation: spin 1s linear infinite;
   }
@@ -116,7 +115,7 @@
   }
   
   .login-link a {
-    color: #6b48ff;
+    color: wheat;
     text-decoration: none;
     font-weight: 600;
   }
@@ -129,24 +128,4 @@
     .form-group input {
       padding: 0.8rem;
     }
-  }
-
-  .back-button {
-    display: block;
-    text-align: center;
-    margin-top: 1.5rem;
-    color: #6b48ff;
-    text-decoration: none;
-    font-weight: 600;
-    padding: 0.8rem 1.5rem;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-    width: fit-content;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  
-  .back-button:hover {
-    background: rgba(107, 72, 255, 0.1);
-    transform: translateX(-5px);
   }

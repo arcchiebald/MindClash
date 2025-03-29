@@ -2,7 +2,7 @@
 .home-container {
     min-height: 100vh;
     padding: 20px;
-    background: url(https://img.freepik.com/free-vector/funny-cartoon-pattern_1409-9652.jpg?t=st=1743250235~exp=1743253835~hmac=f8abf9e2fec3cbd8eed0a7fd8efde83c7f1ac0d29a29e04a18a2d9339a8299dc&w=996);
+    background:url(https://img.freepik.com/premium-photo/simple-abstract-geometric-pattern-background-color-background-website-design-decoration_86390-7410.jpg);
   }
   
   .home-header {
@@ -21,10 +21,10 @@
   
   .logo {
     font-size: 2.8rem;
-    color: #6b48ff;
+    color: #6662e6;
     margin: 0;
     font-family: 'Comic Neue', cursive;
-    text-shadow: 2px 2px 0px #ffd700;
+    text-shadow: 2px 2px 0px #545454;
     animation: float 3s ease-in-out infinite;
   }
   
@@ -41,20 +41,20 @@
   }
   
   .login-button {
-    background: #ff6b6b;
+    background: #a5a3a3;
     color: white;
     padding: 12px 30px;
     border-radius: 15px;
     text-decoration: none;
     font-family: 'Bubblegum Sans', cursive;
     font-size: 1.1rem;
-    box-shadow: 0 4px 0 #ff4757;
+    box-shadow: 0 4px 0 #000000;
     transition: all 0.2s;
   }
   
   .login-button:hover {
     transform: translateY(2px);
-    box-shadow: 0 2px 0 #ff4757;
+    box-shadow: 0 2px 0 #3f3f3f;
   }
   
   .hero-section {
@@ -74,7 +74,7 @@
   
   .hero-content h2 {
     font-size: 2.8rem;
-    color: #2f2d2e;
+    color: #3a3a3a;
     margin-bottom: 20px;
     font-family: 'Bubblegum Sans', cursive;
   }

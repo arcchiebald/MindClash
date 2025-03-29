@@ -2,7 +2,7 @@
 .login-container {
     min-height: 100vh;
     padding: 2rem;
-    background: url(https://img.freepik.com/premium-vector/doodle-artwork-background_1409-8108.jpg?w=996);
+    background: url(https://img.freepik.com/premium-photo/simple-abstract-geometric-pattern-background-color-background-website-design-decoration_86390-7410.jpg);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -20,7 +20,7 @@
   }
   
   .login-title {
-    color: #2f2d2e;
+    color: #555555;
     font-family: 'Bubblegum Sans', cursive;
     font-size: 2rem;
     text-align: center;
@@ -41,7 +41,7 @@
   }
   
   .form-group label {
-    color: #6b48ff;
+    color: #180085;
     font-weight: 600;
     font-size: 0.9rem;
   }
@@ -56,7 +56,7 @@
   
   .form-group input:focus {
     outline: none;
-    border-color: #6b48ff;
+    border-color: #ffffff;
     box-shadow: 0 2px 8px rgba(107, 72, 255, 0.1);
   }
   
@@ -89,14 +89,14 @@
   }
   
   .login-links .link {
-    color: #6b48ff;
+    color: #000000;
     text-decoration: none;
     font-size: 0.9rem;
     transition: all 0.3s ease;
   }
   
   .login-links .link:hover {
-    color: #5a3dd9;
+    color: #0051ff;
     text-decoration: underline;
   }
   
@@ -110,19 +110,6 @@
       gap: 0.8rem;
       text-align: center;
     }
-  }/* Add to Login.css */
-.back-button {
-    display: block;
-    text-align: center;
-    margin-top: 2rem;
-    color: #6b48ff;
-    text-decoration: none;
-    font-weight: 600;
-    padding: 0.8rem 1.5rem;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-    width: fit-content;
-    margin: 2rem auto 0;
   }
   
   .back-button:hover {

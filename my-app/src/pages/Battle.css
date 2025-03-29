@@ -3,7 +3,7 @@
 .battle-container {
   padding: 2rem;
   min-height: 100vh;
-  background: linear-gradient(135deg, #6b73ff 0%, #000dff 100%);
+  background: url(https://thumb.ac-illust.com/dc/dc1076cab00dc3f2b3c0fff4041b8a18_w.jpeg);
   font-family: 'Inter', sans-serif;
   color: white;
   display: flex;
@@ -122,14 +122,6 @@
   margin-bottom: 1rem;
 }
 
-.back-button {
-  display: block;
-  text-align: center;
-  margin-top: 2rem;
-  color: #ffcc00;
-  text-decoration: none;
-  font-weight: 600;
-}
 
 .win-stats {
   background: rgba(255, 215, 0, 0.3);

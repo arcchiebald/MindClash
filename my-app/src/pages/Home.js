@@ -9,7 +9,7 @@ const Home = () => {
       {/* Header Section */}
       <header className="home-header">
         <div className="logo-section">
-          <h1 className="logo">StudyBattle</h1>
+          <h1 className="logo">MindClash</h1>
           <p className="tagline">Learn. Compete. Excel.</p>
         </div>
         <Link to="/login" className="login-button">
