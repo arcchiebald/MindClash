@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 import vertexai
-from vertexai.language_models import TextGenerationModel
+from vertexai.preview.generative_models import GenerativeModel
 from django.http import JsonResponse
 
 
@@ -26,7 +26,7 @@ class LoginView(APIView):
         serializer = LoginSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.validated_data['user']
-            token = Token.objects.get_or_create(user=user)
+            token, _ = Token.objects.get_or_create(user=user)
             return Response({"token": token.key}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
@@ -57,9 +57,8 @@ class QuizGenerationView(APIView):
     def post(self, request):
         """Generate a quiz question and answer using Google's Gemini model."""
         vertexai.init(project="mindclash-455211", location="us-central1")
-        prompt = "Generate a multiple-choice question for high school physics with four options and the correct answer."
         
-        model = TextGenerationModel.from_pretrained("gemini-pro")
-        response = model.predict(prompt, max_output_tokens=200)
+        model = GenerativeModel('gemini-pro')
+        response = model.generate_content('say hi')
         
         return JsonResponse({"question": response.text})
