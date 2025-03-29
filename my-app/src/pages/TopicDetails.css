@@ -2,7 +2,7 @@
   max-width: 800px;
   margin: 2rem auto;
   padding: 2rem;
-  background: white;
+  background: rgb(179, 198, 245);
   border-radius: 20px;
   box-shadow: 0 8px 20px rgba(107, 72, 255, 0.1);
 }
@@ -12,10 +12,12 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2rem;
+  color: #000000;
+  font: optional;
 }
 
 .content-section {
-  background: #f9f2ff;
+  background: #ffffff;
   padding: 1.5rem;
   border-radius: 15px;
   margin-bottom: 2rem;
@@ -26,7 +28,7 @@
 }
 
 .task-card {
-  background: #fff;
+  background: #ffffff;
   padding: 1.5rem;
   margin: 1.5rem 0;
   border-radius: 15px;
@@ -56,7 +58,7 @@
 }
 
 .option-button.correct {
-  background: #6b48ff;
+  background: #f7f5ff;
   color: white;
   border-color: #4b32b2;
 }
@@ -107,6 +109,7 @@
   color: #00c853;
   font-weight: bold;
 }
+
 
 .incorrect {
   color: #ff1744;
