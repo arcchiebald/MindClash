@@ -7,6 +7,7 @@ import Battle from './pages/Battle';
 import Login from './pages/Login'; // Add this import
 import Learn from './pages/Learn';
 import './App.css';
+import Signup from './pages/SignUp';
 
 function App() {
   return (
@@ -15,7 +16,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/battle" element={<Battle />} />
-        <Route path="/login" element={<Login />} /> {/* Add this line */}
+        <Route path="/login" element={<Login />} />
+<Route path="/signup" element={<Signup />} /> {/* Add this line */}
       
 <Route path="/learn" element={<Learn />} />
       </Routes>
