@@ -55,7 +55,7 @@ class Profile(models.Model):
 class Student(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='student_profile')
     GRADE_CHOICES = [(i, f"Class {i}") for i in range(9, 13)]
-    grade = models.IntegerField(choices=GRADE_CHOICES, default=5)
+    grade = models.IntegerField(choices=GRADE_CHOICES, null=True, blank=True, default=None)
     skill_points = models.IntegerField(default=1000)
     number_of_wins = models.IntegerField(default=0)
     ready = models.BooleanField(default=False)
@@ -79,3 +79,27 @@ def create_student_profile(sender, instance, created, **kwargs):
 def save_student_profile(sender, instance, **kwargs):
     if hasattr(instance, 'student_profile'):
         instance.student_profile.save()
+        
+class Subject(models.Model):
+    name = models.CharField(max_length=100)
+
+
+    def __str__(self):
+        return self.name
+
+class GradeTopic(models.Model):
+    GRADE_CHOICES = [(i, f"Class {i}") for i in range(9, 13)]
+    grade = models.IntegerField(choices=GRADE_CHOICES)
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='grade_topics')
+    topics = models.JSONField(default=list, help_text="List of topics for the grade")  # Change to JSONField
+    def get_topics_list(self):
+        return [topic.strip() for topic in self.topics.split(',')]
+
+    def __str__(self):
+        return f"{self.subject.name} - Class {self.grade}"
+    
+@receiver(post_save, sender=Subject)
+def create_grade_topics(sender, instance, created, **kwargs):
+    if created:
+        for grade in range(9, 13):
+            GradeTopic.objects.create(grade=grade, subject=instance, topics="")  # Initialize with empty topics
