@@ -1,39 +1,135 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import './TopicDetails.css';
 
 const topicsContent = {
-  mathematics: {
-    9: [
-      {
-        title: 'Algebra Basics',
-        content: 'Overview of variables, expressions, and simple equations.',
-        tasks: ['Solve equation: x + 5 = 12', 'Simplify: 3x + 2x', 'Find the value of x in: 2x = 10']
-      },
-      // Add additional topics as needed...
-    ],
-    10: [
-      {
-        title: 'Quadratic Equations',
-        content: 'Learn about solving quadratic equations using the quadratic formula.',
-        tasks: ['Solve: x² - 5x + 6 = 0', 'Determine the discriminant of: 2x² + 3x - 2 = 0', 'Graph a quadratic function']
-      },
-      // More topics...
-    ],
-    // Similarly for grades 11 and 12...
-  },
-  english: {
-    // Fill with similar structure...
-  },
-  history: {
-    // Fill with similar structure...
-  }
-};
-
+    mathematics: {
+      9: [
+        {
+          title: 'Algebra Basics',
+          content: 'Overview of variables, expressions, and simple equations.',
+          tasks: [
+            {
+              question: 'Solve equation: x + 5 = 12',
+              answer: '7',
+              type: 'text',
+              explanation: 'Subtract 5 from both sides: x + 5 - 5 = 12 - 5 → x = 7'
+            },
+            {
+              question: 'Simplify: 3x + 2x',
+              answer: '5x',
+              type: 'text',
+              explanation: 'Combine like terms: 3x + 2x = (3+2)x = 5x'
+            },
+            {
+              question: 'Find the value of x in: 2x = 10',
+              answer: '5',
+              type: 'mcq',
+              options: ['3', '5', '7'],
+              explanation: 'Divide both sides by 2: 2x/2 = 10/2 → x = 5'
+            }
+          ]
+        },
+        {
+          title: 'Geometry Fundamentals',
+          content: 'Basic concepts of points, lines, angles, and shapes.',
+          tasks: [
+            {
+              question: 'What is the sum of interior angles in a triangle?',
+              answer: '180°',
+              type: 'mcq',
+              options: ['90°', '180°', '360°'],
+              explanation: 'The sum of interior angles in any triangle always equals 180 degrees.'
+            },
+            {
+              question: 'How many sides does a quadrilateral have?',
+              answer: '4',
+              type: 'mcq',
+              options: ['3', '4', '5'],
+              explanation: 'Quadrilaterals are four-sided polygons (quad = four, lateral = side).'
+            },
+            {
+              question: 'Calculate the area of a rectangle with length 5cm and width 3cm',
+              answer: '15',
+              type: 'text',
+              explanation: 'Area = length × width = 5cm × 3cm = 15cm²'
+            },
+            {
+              question: 'What type of angle is 95°?',
+              answer: 'Obtuse',
+              type: 'mcq',
+              options: ['Acute', 'Right', 'Obtuse', 'Straight'],
+              explanation: 'Angles between 90° and 180° are called obtuse angles.'
+            }
+          ]
+        },
+        {
+          title: 'Linear Equations',
+          content: 'Solving equations with variables and graphing linear functions.',
+          tasks: [
+            {
+              question: 'Solve for y: 2y - 4 = 10',
+              answer: '7',
+              type: 'text',
+              explanation: 'Add 4 to both sides: 2y = 14 → Divide by 2: y = 7'
+            },
+            {
+              question: 'What is the slope of y = 3x + 2?',
+              answer: '3',
+              type: 'mcq',
+              options: ['2', '3', '5'],
+              explanation: 'In y = mx + b form, m represents the slope (coefficient of x).'
+            },
+            {
+              question: 'Find the x-intercept of 2x + 3y = 6',
+              answer: '3',
+              type: 'text',
+              explanation: 'Set y=0: 2x = 6 → x = 3'
+            },
+            {
+              question: 'Which equation represents a vertical line?',
+              answer: 'x = 5',
+              type: 'mcq',
+              options: ['y = 2x + 1', 'x = 5', 'y = -3', '2x + 3y = 6'],
+              explanation: 'Vertical lines have equations of form x = constant.'
+            },
+            {
+              question: 'Solve the system: x + y = 5 and x - y = 1',
+              answer: 'x=3, y=2',
+              type: 'text',
+              explanation: 'Add the equations: 2x = 6 → x=3. Substitute: 3 + y = 5 → y=2'
+            }
+          ]
+        }
+      ],
+      10: [
+        // Grade 10 topics can be added here
+      ]
+    },
+    english: {
+      // English topics...
+    },
+    history: {
+      // History topics...
+    }
+  };
 const TopicDetails = () => {
   const { grade, subject, topicIndex } = useParams();
   const topicList = topicsContent[subject]?.[grade] || [];
   const topic = topicList[topicIndex];
+  const [userAnswers, setUserAnswers] = useState({});
+  const [showAnswers, setShowAnswers] = useState(false);
+
+  const handleAnswerChange = (taskIndex, value) => {
+    setUserAnswers(prev => ({
+      ...prev,
+      [taskIndex]: value
+    }));
+  };
+
+  const checkAnswers = () => {
+    setShowAnswers(true);
+  };
 
   if (!topic) {
     return (
@@ -48,19 +144,82 @@ const TopicDetails = () => {
 
   return (
     <div className="topic-details-container">
-      <h1>{topic.title}</h1>
-      <p>{topic.content}</p>
+      <div className="topic-header">
+        <h1>{topic.title}</h1>
+        <Link to={`/learn/${grade}/${subject}`} className="back-link">
+          ← Back to Topics
+        </Link>
+      </div>
       
-      <h2>Tasks</h2>
-      <ul>
+      <div className="content-section">
+        <h2>Lesson Content</h2>
+        <p>{topic.content}</p>
+      </div>
+
+      <div className="tasks-section">
+        <h2>Practice Exercises</h2>
         {topic.tasks.map((task, index) => (
-          <li key={index}>{task}</li>
+          <div key={index} className="task-card">
+            <h3>Exercise {index + 1}</h3>
+            <p>{task.question}</p>
+            
+            {task.type === 'mcq' ? (
+              <div className="options-grid">
+                {task.options.map((option, optIndex) => (
+                  <button
+                    key={optIndex}
+                    className={`option-button 
+                      ${userAnswers[index] === option ? 'selected' : ''}
+                      ${showAnswers && option === task.answer ? 'correct' : ''}
+                      ${showAnswers && userAnswers[index] === option && option !== task.answer ? 'incorrect' : ''}
+                    `}
+                    onClick={() => !showAnswers && handleAnswerChange(index, option)}
+                    disabled={showAnswers}
+                  >
+                    {option}
+                    {userAnswers[index] === option && !showAnswers && (
+                      <span className="selection-indicator">✓</span>
+                    )}
+                  </button>
+                ))}
+              </div>
+            ) : (
+              <input
+                type="text"
+                value={userAnswers[index] || ''}
+                onChange={(e) => handleAnswerChange(index, e.target.value)}
+                className="answer-input"
+                placeholder="Your answer..."
+                disabled={showAnswers}
+              />
+            )}
+
+            {showAnswers && (
+              <div className="answer-feedback">
+                <span className="correct-answer">
+                  Correct answer: {task.answer}
+                </span>
+                {userAnswers[index] === task.answer ? (
+                  <span className="correct">✓ Correct!</span>
+                ) : (
+                  <span className="incorrect">✗ Try again!</span>
+                )}
+                {task.explanation && (
+                  <p className="explanation">{task.explanation}</p>
+                )}
+              </div>
+            )}
+          </div>
         ))}
-      </ul>
-      
-      <Link to={`/learn/${grade}/${subject}`} className="back-link">
-        ← Back to Topics
-      </Link>
+
+        <button 
+          className="submit-button"
+          onClick={checkAnswers}
+          disabled={Object.keys(userAnswers).length !== topic.tasks.length}
+        >
+          Check Answers
+        </button>
+      </div>
     </div>
   );
 };
