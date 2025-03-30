@@ -176,3 +176,5 @@ cython_debug/
 .pypirc
 
 studybattle/db.sqlite3
+
+frontend/
