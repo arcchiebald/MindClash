@@ -518,3 +518,24 @@
     width: 100%;
   }
 }
+
+.current-score {
+  background: rgba(255, 204, 0, 0.2);
+  color: #ffcc00;
+  font-weight: bold;
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  margin-top: 0.7rem;
+  display: inline-block;
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 204, 0, 0.3);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  animation: scoreUpdate 0.5s ease-out;
+  transition: all 0.3s ease;
+}
+
+@keyframes scoreUpdate {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}

@@ -26,6 +26,7 @@ const BattleSession = () => {
   const [answer, setAnswer] = useState('');
   const [timeRemaining, setTimeRemaining] = useState(60); // 60 seconds per question
   const [animateQuestion, setAnimateQuestion] = useState(false);
+  const [playerScore, setPlayerScore] = useState(0); // Track player score but don't display it
 
   // If we don't have the necessary data, redirect back to battle page
   useEffect(() => {
@@ -70,13 +71,19 @@ const BattleSession = () => {
     api.post(`battle/${battleId}/submit_answer/`, {
       answer: currentAnswer,
       questions: allQuestions,
-      current_question_index: questionIndex
+      current_question_index: questionIndex,
+      player_score: playerScore // Include the current cumulative score in JSON
     })
     .then(response => {
       if (response.data.winner) {
         // We've reached the end of the battle
         setResults(response.data);
       } else {
+        // Update player score from the response, but don't display it
+        if (response.data.player_score !== undefined) {
+          setPlayerScore(response.data.player_score);
+        }
+        
         // Move to the next question
         setCurrentQuestion(response.data.next_question);
         setQuestionIndex(prev => prev + 1);
