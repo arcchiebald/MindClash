@@ -80,6 +80,7 @@ class LeaderboardView(APIView):
 
 class BattleView(ViewSet):
     permission_classes = [IsAuthenticated]
+    player1_score = 0  # Initialize player1_score at the class level
 
     @action(detail=False, methods=['post'])
     def initiate_battle(self, request):
@@ -111,79 +112,74 @@ class BattleView(ViewSet):
         # Generate questions using Vertex AI API
         vertexai.init(project="mindclash-455211", location="us-central1")
         model = GenerativeModel("gemini-pro")
-        prompt = f"I want you to send me only raw input, because i am going to fetch it, so answer me only in this format: (#number_of_question. question \n) . Please, separate questions with \n. Generate 10 questions for grade {student.grade} on the subject {subject.name} on those topics: {', '.join(topics)}. Assume user should answer with keyboard input only (string,integer). Only questions, no explanations. Do not include any other text or formatting. Example: 1. What is the capital of France? \n 2. What is 2 + 2? \n"
+        prompt = f"I want you to send me only raw input, because i am going to fetch it, so answer me only in this format: (#number_of_question. question ||) . Please, separate questions with \n. Generate 10 questions for grade {student.grade} on the subject {subject.name} on those topics: {', '.join(topics)}. Assume user should answer with keyboard input only (string,integer). Only questions, no explanations. Do not include any other text or formatting. Example: 1. What is the capital of France? || 2. What is 2 + 2? ||"
         response = model.generate_content(prompt)
-        print(prompt)
-        print(response)
-        questions = response.text.split('\n')[:10]
-
-        # Store questions in the session for tracking
-        request.session[f"battle_{battle.id}_questions"] = questions
-        request.session[f"battle_{battle.id}_current_question"] = 0
-        request.session[f"battle_{battle.id}_player1_answers"] = []
-        request.session[f"battle_{battle.id}_bot_scores"] = []
+        questions = response.text.split('||')[:10]
 
         # Mark the user as not ready
         student.ready = False
         student.save()
 
-        return Response({"battle_id": battle.id, "first_question": questions[0]}, status=status.HTTP_201_CREATED)
+        return Response({
+            "battle_id": battle.id,
+            "questions": questions,
+            "first_question": questions[0],
+            "subject": subject.name,
+            "topics": topics,
+            "grade": student.grade,
+            "opponent": {
+                "username": bot_student.user.username,
+                "skill_points": bot_student.skill_points,
+                "number_of_wins": bot_student.number_of_wins
+            }
+        }, status=status.HTTP_201_CREATED)
 
     @action(detail=True, methods=['post'])
     def submit_answer(self, request, pk=None):
+        # Get previous scores from request data
+        player_score = request.data.get('player_score', 0)
         bot_user = CustomUser.objects.get(id=2)  # Retrieve the bot user
         bot_student = bot_user.student_profile  # Retrieve the bot student profile
         battle = Battle.objects.get(id=pk)
-        current_question = request.session.get(f"battle_{pk}_current_question", 0)
-        questions = request.session.get(f"battle_{pk}_questions", [])
 
-        if len(request.session.get(f"battle_{pk}_player1_answers", [])) >= len(questions):
+        # Retrieve questions from the request
+        questions = request.data.get('questions', [])
+        current_question_index = request.data.get('current_question_index', 0)
+
+        if current_question_index >= 10:
             return Response({"detail": "All questions have been answered."}, status=status.HTTP_400_BAD_REQUEST)
 
         # Log the answer
         answer = request.data.get('answer')
-        if f"battle_{pk}_player1_answers" not in request.session:
-            request.session[f"battle_{pk}_player1_answers"] = []
-        request.session[f"battle_{pk}_player1_answers"].append(answer)
-
-        # Retrieve the current question
-        question = questions[current_question]
+        question = questions[current_question_index]
 
         # Use Vertex AI API to grade the answer
         vertexai.init(project="mindclash-455211", location="us-central1")
-        model =  GenerativeModel("gemini-pro")
+        model = GenerativeModel("gemini-pro")
         grading_prompt = f"I am web app and I want only raw answer from you. Evaluate the following answer for the question: '{question}' -> Answer: [{answer}]. Provide a score of 1 if the answer is correct, otherwise 0. Only return the score as an integer. Example: 0 or 1. Do not include any other text or formatting."
         grading_response = model.generate_content(grading_prompt)
+        print(grading_response.text)  # Debugging line to check the grading response
+        print(player_score)  # Debugging line to check the player score
 
-
-        # Validate the response and handle invalid cases
+        # Get score for this question
         try:
-            player1_score = int(grading_response.text.strip())
+            player_score += int(grading_response.text.strip())
         except (ValueError, TypeError):
-            # Log the invalid response for debugging purposes
-            print(f"Invalid AI response: {grading_response.text.strip()}")
-            player1_score = 0  # Default to 0 if the response is not a valid integer
+            player_score += 0  # Default to 0 if the response is not a valid integer
 
-        # Add the score to the total player1 score
-        request.session[f"battle_{pk}_bot_scores"].append(player1_score)
 
-        # Move to the next question
-        request.session[f"battle_{pk}_current_question"] += 1
-
-        if request.session[f"battle_{pk}_current_question"] >= len(questions):
-            # Calculate total scores and determine the winner
-            player1_total_score = sum(request.session[f"battle_{pk}_bot_scores"])
-
+        # Calculate total scores and determine the winner if it's the last question
+        if current_question_index == len(questions) - 1:
             # Generate a random bot score for the entire battle
             import random
             bot_total_score = random.randint(1, 6)
 
-            if player1_total_score > bot_total_score:
+            if player_score > bot_total_score:
                 winner = request.user.username
-            elif bot_total_score > player1_total_score:
-                winner = bot_student.user.username
+            elif bot_total_score > player_score:
+                winner = "Bot"
             else:
-                winner = "draw"  # TODO: Implement draw logic here
+                winner = "draw"
 
             # Update the battle instance
             if winner == "draw":
@@ -196,19 +192,15 @@ class BattleView(ViewSet):
             battle.date_completed = timezone.now()
             battle.save()
 
-            # Clear session data for the battle
-            del request.session[f"battle_{pk}_questions"]
-            del request.session[f"battle_{pk}_current_question"]
-            del request.session[f"battle_{pk}_player1_answers"]
-            del request.session[f"battle_{pk}_bot_scores"]
-
             return Response({
                 "winner": winner,
-                "player1_total_score": player1_total_score,
+                "player1_total_score": player_score,
                 "bot_total_score": bot_total_score
             }, status=status.HTTP_200_OK)
 
-        return Response({"next_question": questions[request.session[f"battle_{pk}_current_question"]]}, status=status.HTTP_200_OK)
-
+        return Response({
+            "next_question": questions[current_question_index + 1],
+            "player_score": player_score,
+        }, status=status.HTTP_200_OK)
 
 
