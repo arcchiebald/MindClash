@@ -82,14 +82,14 @@ const Profile = () => {
   
       // Convert to number and update
       const numericGrade = parseInt(newGrade);
-      const response = await api.patch(`http://127.0.0.1:8000/api/register/`, { 
-        student_profile: {
-          grade: numericGrade
-        }
+      
+      // Use the new API endpoint with PUT method
+      const response = await api.put(`/update-grade/`, { 
+        grade: numericGrade
       });
   
       // Verify backend returns updated data
-      if (response.data.student_profile?.grade) {
+      if (response.data.grade) {
         setLocalGrade(numericGrade);
         setProfile(prev => ({
           ...prev,
@@ -146,10 +146,7 @@ const Profile = () => {
   <div className="grade-display">
     <span>Current Grade: {localGrade}</span>
     <button 
-      onClick={() => {
-        const newGrade = prompt('Enter new grade (9-12):', localGrade);
-        if (newGrade >= 9 && newGrade <= 12) updateGrade(newGrade);
-      }}
+      onClick={() => updateGrade()}
       className="signup-button"
       style={{ 
         marginTop: '0.5rem',
