@@ -1,0 +1,362 @@
+/* src/pages/Battle.css */
+.battle-container {
+  padding: 2rem;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+  font-family: 'Inter', sans-serif;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+@keyframes gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.logo-section {
+  text-decoration: none;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.logo {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+  background: -webkit-linear-gradient(#fff, #ffcc00);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
+  font-weight: 800;
+  letter-spacing: 2px;
+  position: relative;
+  text-transform: uppercase;
+}
+
+.logo::after {
+  content: '';
+  position: absolute;
+  width: 70%;
+  height: 4px;
+  background: linear-gradient(90deg, transparent, #ffcc00, transparent);
+  bottom: -10px;
+  left: 15%;
+  border-radius: 2px;
+}
+
+.tagline {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin-top: 0.5rem;
+}
+
+/* Subject Selector */
+.subject-select-container {
+  margin-bottom: 3rem;
+  text-align: center;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  padding: 1.2rem 2rem;
+  border-radius: 15px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.subject-select-container label {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.subject-select {
+  padding: 12px 20px;
+  font-size: 1.1rem;
+  border-radius: 12px;
+  border: 2px solid rgba(255, 204, 0, 0.6);
+  background: rgba(0, 0, 0, 0.2);
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.subject-select:hover, .subject-select:focus {
+  border-color: #ffcc00;
+  box-shadow: 0 0 0 3px rgba(255, 204, 0, 0.3);
+  outline: none;
+}
+
+.subject-select option {
+  background-color: #2c2c2c;
+  color: white;
+}
+
+/* Battle Panels */
+.battle-panels {
+  display: flex;
+  justify-content: center;
+  gap: 4rem;
+  margin: 2rem auto;
+  max-width: 1200px;
+  width: 100%;
+}
+
+.user-panel, .opponent-panel {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  padding: 2.5rem;
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  max-width: 300px;
+}
+
+.user-panel:hover, .opponent-panel:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+}
+
+.user-panel::before, .opponent-panel::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(rgba(255, 255, 255, 0.1), transparent);
+  transform: rotate(30deg);
+  z-index: -1;
+}
+
+.battle-avatar {
+  font-size: 4.5rem;
+  margin-bottom: 1.5rem;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+.vs-circle {
+  width: 120px;
+  height: 120px;
+  background-color: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(5px);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #ff6b6b;
+  align-self: center;
+  box-shadow: 0 0 15px rgba(255, 107, 107, 0.8), inset 0 0 10px rgba(255, 107, 107, 0.4);
+  border: 2px solid rgba(255, 107, 107, 0.6);
+  animation: pulse 2s infinite;
+  position: relative;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); box-shadow: 0 0 15px rgba(255, 107, 107, 0.8), inset 0 0 10px rgba(255, 107, 107, 0.4); }
+  50% { transform: scale(1.1); box-shadow: 0 0 25px rgba(255, 107, 107, 0.8), inset 0 0 20px rgba(255, 107, 107, 0.4); }
+  100% { transform: scale(1); box-shadow: 0 0 15px rgba(255, 107, 107, 0.8), inset 0 0 10px rgba(255, 107, 107, 0.4); }
+}
+
+/* Battle Controls */
+.battle-controls {
+  text-align: center;
+  margin-top: 3rem;
+  width: 100%;
+  max-width: 600px;
+}
+
+.ready-button {
+  background: linear-gradient(135deg, #ffcc00, #ff9800);
+  color: #000;
+  padding: 1.5rem 4rem;
+  border-radius: 35px;
+  font-size: 1.3rem;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 204, 0, 0.5);
+  position: relative;
+  overflow: hidden;
+  min-width: 250px;
+}
+
+.ready-button::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(rgba(255, 255, 255, 0.8), transparent);
+  transform: rotate(30deg);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.ready-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(255, 204, 0, 0.6);
+  background: linear-gradient(135deg, #ffaa00, #ff8800);
+}
+
+.ready-button:hover::before {
+  opacity: 0.2;
+}
+
+.ready-button.searching {
+  background: linear-gradient(135deg, #ff9800, #ff5722);
+  cursor: not-allowed;
+}
+
+.search-spinner {
+  width: 25px;
+  height: 25px;
+  border: 4px solid rgba(255,255,255,0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-right: 12px;
+  display: inline-block;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Countdown */
+.countdown-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.countdown-timer {
+  font-size: 2rem;
+  color: #ffcc00;
+  font-weight: bold;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 1rem 2rem;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  animation: pulsate 1s infinite alternate;
+}
+
+@keyframes pulsate {
+  from { transform: scale(1); text-shadow: 0 0 10px rgba(255, 204, 0, 0.7); }
+  to { transform: scale(1.05); text-shadow: 0 0 20px rgba(255, 204, 0, 0.9), 0 0 30px rgba(255, 204, 0, 0.5); }
+}
+
+.cancel-button {
+  background: rgba(244, 67, 54, 0.8);
+  color: white;
+  padding: 1rem 2.5rem;
+  border-radius: 30px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(244, 67, 54, 0.3);
+}
+
+.cancel-button:hover {
+  background: rgba(244, 67, 54, 1);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(244, 67, 54, 0.4);
+}
+
+/* Animations */
+.searching-pulse {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  border: 4px solid rgba(255, 107, 107, 0.8);
+  border-radius: 50%;
+  animation: search-pulse 1.5s infinite;
+}
+
+@keyframes search-pulse {
+  0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(1.5); opacity: 0; }
+}
+
+/* Opponent Section */
+.win-stats {
+  background: rgba(255, 215, 0, 0.2);
+  color: #ffcc00;
+  padding: 0.8rem 1.5rem;
+  border-radius: 12px;
+  font-weight: 600;
+  margin-top: 1rem;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+.opponent-placeholder {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1.2rem;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-style: italic;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .battle-panels {
+    flex-direction: column;
+    gap: 2rem;
+  }
+  
+  .vs-circle {
+    margin: 1rem 0;
+  }
+  
+  .user-panel, .opponent-panel {
+    width: 100%;
+    max-width: none;
+  }
+  
+  .subject-select-container {
+    flex-direction: column;
+    padding: 1rem;
+  }
+  
+  .ready-button, .cancel-button {
+    width: 100%;
+    padding: 1.2rem;
+  }
+}
