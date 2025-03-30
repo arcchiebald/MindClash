@@ -29,6 +29,11 @@ const Profile = () => {
         const userData = response.data;
         setProfile({
           username: userData.username,
+          email: userData.email,
+          birthday: userData.birthday,
+          age: userData.age,
+          bio: userData.profile.bio,
+          location: userData.profile.location || 'Not specified',
           grade: userData.student_profile.grade,
           skillLevel: userData.student_profile.skill_points,
           wins: userData.student_profile.number_of_wins,
@@ -114,6 +119,25 @@ const Profile = () => {
           <h2>{profile.username}</h2>
         </div>
 
+        <div className="profile-details">
+          <div className="stat-item">
+            <span className="stat-label">Email:</span>
+            <span className="detail-value">{profile.email}</span>
+          </div>
+          <div className="stat-item">
+            <span className="stat-label">Age:</span>
+            <span className="detail-value">{profile.age}</span>
+          </div>
+          <div className="stat-item">
+            <span className="stat-label">Bio:</span>
+            <span className="detail-value">{profile.bio}</span>
+          </div>
+          <div className="stat-item">
+            <span className="stat-label">Location:</span>
+            <span className="detail-value">{profile.location}</span>
+          </div>
+        </div>
+
         <div className="profile-stats">
           {/* Grade Selector */}
       
@@ -144,33 +168,45 @@ const Profile = () => {
             <div className="skill-meter">
               <div 
                 className="skill-progress" 
-                style={{ width: `${Math.min(profile.skillLevel, 100)}%` }}
+                style={{ width: `${Math.min(profile.skillLevel/100, 100)}%` }}
               >
-                {Math.min(profile.skillLevel, 100)}%
+                {Math.min(profile.skillLevel/100, 100)}%
               </div>
             </div>
           </div>
 
           {/* Wins Counter */}
           <div className="stat-item">
-            <span className="stat-label">🏆 Battle Wins</span>
+            <span className="stat-label">🏆 Clash Wins</span>
             <div className="wins-counter">
               {profile.wins}
             </div>
           </div>
 
-          {/* Crowns Counter */}
-          <div className="stat-item">
-            <span className="stat-label">👑 Crowns Earned</span>
-            <div className="crown-counter">
-              {profile.crowns}
-            </div>
-          </div>
         </div>
 
         <Link to="/" className="back-button">
           ← Back to Home
         </Link>
+        <button 
+          onClick={() => {
+            localStorage.removeItem('authToken');
+            navigate('/login');
+          }}
+          className="logout-button"
+          style={{ 
+            marginTop: '1rem',
+            padding: '0.5rem 1rem',
+            fontSize: '1rem',
+            backgroundColor: '#ff4d4d',
+            color: 'white',
+            border: 'none',
+            borderRadius: '5px',
+            cursor: 'pointer'
+          }}
+        >
+          Logout
+        </button>
       </div>
     </div>
   );

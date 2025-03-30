@@ -1,169 +1,211 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation, useNavigate, Link } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import './BattleSession.css';
+import api from '../utils/api';
 
 const BattleSession = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { user, opponent, subject, grade } = location.state || {};
   
-  // State management
-  const [questions, setQuestions] = useState([]);
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [userAnswers, setUserAnswers] = useState([]);
-  const [timeLeft, setTimeLeft] = useState(60);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isFinished, setIsFinished] = useState(false);
-  const [currentAnswer, setCurrentAnswer] = useState('');
+  // Properly destructure all the data we need from location.state
+  const { 
+    battleId, 
+    firstQuestion, 
+    questions, 
+    subject, 
+    topics, 
+    grade, 
+    opponent 
+  } = location.state || {};
+
+  const [currentQuestion, setCurrentQuestion] = useState(firstQuestion);
+  const [allQuestions, setAllQuestions] = useState(questions || []);
+  const [questionIndex, setQuestionIndex] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [results, setResults] = useState(null);
+  const [answer, setAnswer] = useState('');
+  const [timeRemaining, setTimeRemaining] = useState(60); // 60 seconds per question
+  const [animateQuestion, setAnimateQuestion] = useState(false);
 
-  // Fetch questions from Django backend
+  // If we don't have the necessary data, redirect back to battle page
   useEffect(() => {
-    const fetchQuestions = async () => {
-      try {
-        const response = await fetch('/api/questions/', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            subject,
-            grade,
-            num_questions: 10
-          }),
-        });
-        
-        if (!response.ok) throw new Error('Failed to fetch questions');
-        
-        const data = await response.json();
-        setQuestions(data.questions);
-        setIsLoading(false);
-      } catch (error) {
-        console.error('Error fetching questions:', error);
-        navigate('/battle', { state: { error: 'Failed to load questions' } });
-      }
-    };
+    if (!battleId || !questions || !opponent) {
+      navigate('/battle');
+    }
+  }, [battleId, questions, opponent, navigate]);
 
-    if (subject && grade) fetchQuestions();
-  }, [subject, grade, navigate]);
-
-  // Timer system
+  // Timer effect
   useEffect(() => {
-    if (!isLoading && currentQuestionIndex < questions.length) {
-      const timer = setInterval(() => {
-        setTimeLeft((prev) => {
-          if (prev <= 1) {
-            handleAnswerSubmit(''); // Submit empty answer if time runs out
-            return 60;
-          }
-          return prev - 1;
-        });
-      }, 1000);
-
-      return () => clearInterval(timer);
-    }
-  }, [currentQuestionIndex, isLoading, questions.length]);
-
-  const handleAnswerSubmit = (answer) => {
-    setIsSubmitting(true);
-    setUserAnswers([...userAnswers, {
-      question_id: questions[currentQuestionIndex].id,
-      answer_text: answer
-    }]);
-    setCurrentAnswer('');
-    setIsSubmitting(false);
-
-    if (currentQuestionIndex < questions.length - 1) {
-      setCurrentQuestionIndex(prev => prev + 1);
-      setTimeLeft(60);
-    } else {
-      finishBattle();
-    }
-  };
-
-  const finishBattle = async () => {
-    setIsFinished(true);
-    try {
-      const response = await fetch('/api/submit-answers/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          user_id: user.id,
-          opponent_id: opponent.id,
-          answers: userAnswers
-        }),
+    if (results) return; // Stop timer if results are shown
+    
+    const timer = setInterval(() => {
+      setTimeRemaining(prev => {
+        if (prev <= 1) {
+          // Auto-submit when time runs out
+          handleAnswerSubmit();
+          return 60; // Reset timer
+        }
+        return prev - 1;
       });
+    }, 1000);
+    
+    return () => clearInterval(timer);
+  }, [results, questionIndex]);
 
-      const result = await response.json();
-      navigate('/battle-result', { state: { result } });
-    } catch (error) {
-      console.error('Error submitting answers:', error);
-      navigate('/battle', { state: { error: 'Failed to submit answers' } });
-    }
+  // Animation effect when changing questions
+  useEffect(() => {
+    setAnimateQuestion(true);
+    const timeout = setTimeout(() => setAnimateQuestion(false), 500);
+    return () => clearTimeout(timeout);
+  }, [currentQuestion]);
+
+  const handleAnswerSubmit = () => {
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
+    
+    // Use the current answer value from state
+    const currentAnswer = answer.trim() ? answer : "No answer provided";
+    
+    api.post(`battle/${battleId}/submit_answer/`, {
+      answer: currentAnswer,
+      questions: allQuestions,
+      current_question_index: questionIndex
+    })
+    .then(response => {
+      if (response.data.winner) {
+        // We've reached the end of the battle
+        setResults(response.data);
+      } else {
+        // Move to the next question
+        setCurrentQuestion(response.data.next_question);
+        setQuestionIndex(prev => prev + 1);
+        setAnswer('');
+        setTimeRemaining(60); // Reset timer for next question
+      }
+    })
+    .catch(error => {
+      console.error('Error submitting answer:', error);
+    })
+    .finally(() => {
+      setIsSubmitting(false);
+    });
   };
 
-  if (!opponent) {
-    return (
-      <div className="battle-session-container">
-        <h2>Error: No opponent data received</h2>
-        <Link to="/battle" className="back-button">
-          ← Back to Matchmaking
-        </Link>
-      </div>
-    );
-  }
+  const handleFinish = () => {
+    navigate('/');
+  };
 
-  if (isLoading) {
-    return <div className="battle-session-container">Loading questions...</div>;
-  }
+  // Format time as MM:SS
+  const formatTime = (seconds) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+  };
+
+  // Get color based on remaining time
+  const getTimerColor = () => {
+    if (timeRemaining > 30) return '#4CAF50'; // Green
+    if (timeRemaining > 10) return '#FFC107'; // Yellow
+    return '#FF5252'; // Red
+  };
 
   return (
     <div className="battle-session-container">
+      <h1 className="battle-title">Brain Battle</h1>
+      
       <div className="players-container">
-        {/* User Card */}
         <div className="player-card">
-          <div className="avatar">{user?.avatar}</div>
-          <h3>{user?.name}</h3>
-          <p>Grade {user?.grade}</p>
-          <p className="subject-badge">{subject}</p>
+          <div className="avatar">👨‍🎓</div>
+          <h3>You</h3>
+          <div className="subject-badge">{subject} - Grade {grade}</div>
         </div>
-
+        
         <div className="vs">VS</div>
-
-        {/* Opponent Card */}
+        
         <div className="player-card">
-          <div className="avatar">{opponent.avatar}</div>
-          <h3>{opponent.name}</h3>
-          <p>Grade {opponent.grade}</p>
+          <div className="avatar">🤖</div>
+          <h3>{opponent?.username}</h3>
           <div className="win-stats">
-            🏆 {opponent.wins} Career Wins
+            <span>⭐ {opponent?.skill_points} SP</span> | <span>🏆 {opponent?.number_of_wins} Wins</span>
           </div>
         </div>
       </div>
 
-      {/* Question Interface */}
-      {questions.length > 0 && !isFinished && (
+      <div className="topics-bar">
+        {topics && topics.map((topic, index) => (
+          <span key={index} className="topic-chip">{topic}</span>
+        ))}
+      </div>
+
+      {results ? (
+        <div className="results-container">
+          <div className={`result-card ${results.winner === "draw" ? "draw" : (results.player1_total_score > results.bot_total_score ? "win" : "lose")}`}>
+            <h2 className="result-title">Battle Results</h2>
+            
+            <div className="scores-container">
+              <div className="score-box">
+                <h3>Your Score</h3>
+                <div className="score-value">{results.player1_total_score}</div>
+              </div>
+              
+              <div className="result-badge">
+                {results.winner === "draw" ? "DRAW" : 
+                  (results.winner === opponent?.username ? "DEFEAT" : "VICTORY")}
+              </div>
+              
+              <div className="score-box">
+                <h3>Opponent</h3>
+                <div className="score-value">{results.bot_total_score}</div>
+              </div>
+            </div>
+            
+            <button onClick={handleFinish} className="finish-button pulse-animation">
+              Return to Home
+            </button>
+          </div>
+        </div>
+      ) : (
         <div className="question-container">
           <div className="question-header">
-            <span>Question {currentQuestionIndex + 1} of 10</span>
-            <div className="timer">Time left: {timeLeft}s</div>
+            <div className="question-progress">
+              <div className="progress-bar">
+                <div 
+                  className="progress-fill" 
+                  style={{width: `${(questionIndex / allQuestions.length) * 100}%`}}
+                ></div>
+              </div>
+              <span>Question {questionIndex + 1} of {allQuestions.length}</span>
+            </div>
+            
+            <div 
+              className="timer" 
+              style={{color: getTimerColor()}}
+            >
+              <span className={timeRemaining <= 10 ? "pulse" : ""}>⏱️ {formatTime(timeRemaining)}</span>
+            </div>
           </div>
           
-          <div className="question-card">
-            <h3>{questions[currentQuestionIndex].question_text}</h3>
+          <div className={`question-card ${animateQuestion ? 'slide-in' : ''}`}>
+            <div className="question-text">{currentQuestion}</div>
             <textarea
-              value={currentAnswer}
-              onChange={(e) => setCurrentAnswer(e.target.value)}
+              value={answer}
+              onChange={(e) => setAnswer(e.target.value)}
               placeholder="Type your answer here..."
+              className="answer-input"
             />
-            <button 
+            <button
+              onClick={handleAnswerSubmit}
               className="submit-button"
-              onClick={() => handleAnswerSubmit(currentAnswer)}
-              disabled={isSubmitting}
+              disabled={isSubmitting || !answer.trim()}
             >
-              {isSubmitting ? 'Submitting...' : 'Submit Answer'}
+              {isSubmitting ? (
+                <span className="loading-spinner">⌛</span>
+              ) : questionIndex === allQuestions.length - 1 ? (
+                'Submit Final Answer'
+              ) : (
+                'Next Question'
+              )}
             </button>
           </div>
         </div>

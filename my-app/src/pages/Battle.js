@@ -1,47 +1,71 @@
 // src/pages/Battle.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Battle.css';
+import api from '../utils/api';
 
 const Battle = () => {
   const [isSearching, setIsSearching] = useState(false);
   const [foundOpponent, setFoundOpponent] = useState(null);
   const [countdown, setCountdown] = useState(5);
-  const [selectedSubject, setSelectedSubject] = useState('Math');
+  const [selectedSubject, setSelectedSubject] = useState('');
+  const [subjects, setSubjects] = useState([]);
   const navigate = useNavigate();
 
-  // Mock opponents data
-  const mockOpponents = [
-    { id: 1, name: 'აიტიშნიკი გიორგა', grade: 11, avatar: '🧑🏫', wins: 42 },
-    { id: 2, name: 'მათემატიკის ლომი', grade: 11, avatar: '👩💻', wins: 38 },
-    { id: 3, name: 'ჯუმბერ ტყაბლაძე', grade: 11, avatar: '🧑🎓', wins: 55 },
-  ];
+  useEffect(() => {
+    api.get('subjects/')
+      .then(response => {
+        setSubjects(response.data);
+        if (response.data.length > 0) {
+          setSelectedSubject(response.data[0].id); // Use subject ID
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching subjects:', error);
+      });
+  }, []);
 
   const handleReadyClick = () => {
     if (!isSearching && !foundOpponent) {
       setIsSearching(true);
-      
-      setTimeout(() => {
-        const opponent = mockOpponents[
-          Math.floor(Math.random() * mockOpponents.length)
-        ];
-        setIsSearching(false);
+
+      api.post('battle/initiate_battle/', {
+        subject_id: selectedSubject
+      })
+      .then(response => {
+        const { 
+          battle_id, 
+          questions, 
+          opponent, 
+          subject, 
+          topics, 
+          grade 
+        } = response.data;
+        
         setFoundOpponent(opponent);
-        startCountdown(opponent);
-      }, 2000);
+        startCountdown(battle_id, questions, opponent, subject, topics, grade);
+      })
+      .catch(error => {
+        console.error('Error initiating battle:', error);
+        setIsSearching(false);
+      });
     }
   };
 
-  const startCountdown = (opponent) => {
+  const startCountdown = (battleId, questions, opponent, subject, topics, grade) => {
     const timer = setInterval(() => {
       setCountdown((prev) => {
         if (prev <= 1) {
           clearInterval(timer);
           navigate('/battle/session', {
             state: {
-              opponent: opponent,
-              user: { name: "You", avatar: "🧑💻", grade: 10 },
-              subject: selectedSubject,
+              battleId,
+              firstQuestion: questions[0],
+              questions: questions,
+              opponent,
+              subject: subject,
+              topics: topics,
+              grade: grade
             }
           });
           return 5;
@@ -50,6 +74,7 @@ const Battle = () => {
       });
     }, 1000);
   };
+  
 
   const handleCancel = () => {
     setIsSearching(false);
@@ -58,12 +83,12 @@ const Battle = () => {
   };
 
   const handleSubjectChange = (e) => {
-    setSelectedSubject(e.target.value);
+    const selectedId = parseInt(e.target.value, 10); // Ensure the value is parsed as a number
+    setSelectedSubject(selectedId);
   };
 
   return (
     <div className="battle-container">
-      {/* Added logo link to home */}
       <Link to="/" className="logo-section">
         <h1 className="logo">MindClash</h1>
         <p className="tagline">Learn. Compete. Excel.</p>
@@ -77,9 +102,9 @@ const Battle = () => {
           onChange={handleSubjectChange}
           className="subject-select"
         >
-          <option value="Math">Math</option>
-          <option value="English">English</option>
-          <option value="History">History</option>
+          {subjects.map(subject => (
+            <option key={subject.id} value={subject.id}>{subject.name}</option>
+          ))}
         </select>
       </div>
 
@@ -98,10 +123,10 @@ const Battle = () => {
         <div className="opponent-panel">
           {foundOpponent ? (
             <>
-              <div className="battle-avatar">{foundOpponent.avatar}</div>
-              <h3>{foundOpponent.name}</h3>
-              <p>Grade {foundOpponent.grade}</p>
-              <div className="win-stats">🏆 {foundOpponent.wins} Wins</div>
+              <div className="battle-avatar">{foundOpponent.avatar || '🤖'}</div>
+              <h3>{foundOpponent.username}</h3>
+              <p>Skill Points: {foundOpponent.skill_points}</p>
+              <div className="win-stats">🏆 {foundOpponent.number_of_wins} Wins</div>
             </>
           ) : (
             <div className="opponent-placeholder">

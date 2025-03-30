@@ -191,8 +191,8 @@
   .profile-button {
     background-color: #6b48ff;
     color: white;
-    padding: 10px 25px;
-    border-radius: 25px;
+    padding: 13px 35px;
+    border-radius: 15px;
     text-decoration: none;
     margin-left: 15px;
     transition: transform 0.3s;
@@ -202,8 +202,8 @@
     transform: scale(1.05);
   }/* Add to Home.css */
 .leaderboard-button {
-  background: rgba(255, 215, 0, 0.1);
-  color: #6b48ff;
+  background: rgba(255, 215, 0, 0.8);
+  color: #3A3A3A;
   padding: 12px 30px;
   border-radius: 15px;
   text-decoration: none;
@@ -211,7 +211,7 @@
   font-size: 1.1rem;
   box-shadow: 0 4px 0 rgba(255, 215, 0, 0.2);
   transition: all 0.2s;
-  margin-left: 15px;
+  margin-right: 20px;
   border: 2px solid rgba(255, 215, 0, 0.3);
 }
 

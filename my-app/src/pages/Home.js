@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import './Home.css';
 
 const Home = () => {
+  const isLoggedIn = Boolean(localStorage.getItem('authToken'));
+
   return (
     <div className="home-container">
       {/* Header Section */}
@@ -16,12 +18,15 @@ const Home = () => {
           <Link to="/leaderboard" className="leaderboard-button">
             🏆 Leaderboard
           </Link>
-          <Link to="/login" className="login-button">
-            Login
-          </Link>
-          <Link to="/profile" className="profile-button">
-            👤 Profile
-          </Link>
+          {isLoggedIn ? (
+            <Link to="/profile" className="profile-button">
+              👤 Profile
+            </Link>
+          ) : (
+            <Link to="/login" className="login-button">
+              Login
+            </Link>
+          )}
         </div>
       </header>
 
