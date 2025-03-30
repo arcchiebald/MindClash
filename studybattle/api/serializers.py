@@ -73,6 +73,17 @@ class StudentSerializer(serializers.ModelSerializer):
         model = Student
         fields = ['grade', 'skill_points', 'number_of_wins', 'ready']
 
+class UpdateGradeSerializer(serializers.ModelSerializer):
+    """Serializer for updating student grade."""
+    class Meta:
+        model = Student
+        fields = ['grade']
+        
+    def validate_grade(self, value):
+        if value not in [9, 10, 11, 12]:
+            raise serializers.ValidationError("Grade must be between 9 and 12")
+        return value
+
 class CustomUserSerializer(serializers.ModelSerializer):
     age = serializers.SerializerMethodField()
     profile = ProfileSerializer()  # Nested serializer for Profile

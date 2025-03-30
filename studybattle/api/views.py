@@ -1,4 +1,4 @@
-from .serializers import RegisterSerializer, LoginSerializer, CustomUserSerializer, SubjectSerializer, GradeTopicSerializer
+from .serializers import RegisterSerializer, LoginSerializer, CustomUserSerializer, SubjectSerializer, GradeTopicSerializer, UpdateGradeSerializer
 from .models import Subject, GradeTopic, CustomUser, Profile, Student, Battle
 from django.db.models import Q
 from rest_framework.decorators import action
@@ -13,7 +13,6 @@ from vertexai.preview.generative_models import GenerativeModel
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
-
 
 
 # Create your views here.
@@ -76,6 +75,25 @@ class LeaderboardView(APIView):
             for student in top_students
         ]
         return Response(leaderboard, status=status.HTTP_200_OK)
+
+
+class UpdateGradeView(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def put(self, request):
+        """Update the grade of the authenticated student"""
+        student = request.user.student_profile
+        serializer = UpdateGradeSerializer(student, data=request.data, partial=True)
+        
+        if serializer.is_valid():
+            serializer.save()
+            # Return the updated student data
+            return Response({
+                "message": "Grade updated successfully",
+                "grade": student.grade
+            }, status=status.HTTP_200_OK)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class BattleView(ViewSet):
@@ -202,5 +220,6 @@ class BattleView(ViewSet):
             "next_question": questions[current_question_index + 1],
             "player_score": player_score,
         }, status=status.HTTP_200_OK)
+
 
 
