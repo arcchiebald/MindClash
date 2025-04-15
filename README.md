@@ -4,7 +4,7 @@
 
 MindClash (StudyBattle) is an AI-powered educational platform that combines learning with competitive elements to make studying more engaging for high school students (grades 9-12). The application allows students to master subjects through interactive learning modules and real-time quiz battles against peers.
 
-## 📚 Features
+## 📚 Features!!!
 
 - **AI-Powered Learning Modules**: Personalized learning materials for grades 9-12 in subjects including Mathematics, English, and History
 - **Live 1v1 Battles**: Test knowledge in real-time quiz competitions against other students
